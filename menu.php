@@ -272,21 +272,19 @@ $select_kat_menu = mysqli_query($conn, "SELECT id,kategori_menu FROM tb_kategori
         <div class="modal-dialog modal-xl modal-fullscreen-md-down">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Menu</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Menu</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="needs-validation" novalidate action="proses/proses_edit_menu.php" method="POST"
                         enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="input-group mb-3">
                                     <input type="file" class="form-control" id="uploadFoto" placeholder="Your Name"
                                         name="foto">
-                                    <label class="input-group-text" for="uploadFoto">Upload Foto Menu</label>
-                                    <div class="invalid-feedback">
-                                        Masukkan Foto Menu.
-                                    </div>
+                                    <label class="input-group-text" for="uploadFoto">Upload Foto Menu (Opsional)</label>
                                 </div>
                             </div>
                             <div class="col-lg-6">
