@@ -9,9 +9,9 @@
 
 <?php
 include "proses/connect.php";
-$query = mysqli_query($conn, "SELECT * FROM tb_daftar_menu
-LEFT JOIN tb_kategori_menu ON tb_kategori_menu.id = tb_daftar_menu.kategori
-"); //hubungin database
+$query = mysqli_query($conn, "SELECT tb_daftar_menu.*, tb_kategori_menu.kategori_menu, tb_kategori_menu.jenis_menu 
+FROM tb_daftar_menu 
+LEFT JOIN tb_kategori_menu ON tb_kategori_menu.id = tb_daftar_menu.kategori");
 $result = [];
 while ($record = mysqli_fetch_array($query)) {
   $result[] = $record; //menampung data 
@@ -367,7 +367,7 @@ $select_kat_menu = mysqli_query($conn, "SELECT id,kategori_menu FROM tb_kategori
                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                     <input type="hidden" name="foto" value="<?php echo $row['foto']; ?>">
                     <div class="col-lg-12 mb-3">
-                        Apakah Anda ingin menghapus menu <b><?php echo $row['nama_menu']; ?></b>?
+                        Apakah Anda ingin menghapus menu <b><?php echo htmlspecialchars($row['nama_menu']); ?></b>?
                     </div>
 
                     <div class="modal-footer">
