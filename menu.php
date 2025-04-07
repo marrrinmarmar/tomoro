@@ -7,6 +7,25 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Custom CSS untuk gambar menu -->
+<style>
+.menu-image-container {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.menu-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+</style>
+
 <?php
 include "proses/connect.php";
 $query = mysqli_query($conn, "SELECT tb_daftar_menu.*, tb_kategori_menu.kategori_menu, tb_kategori_menu.jenis_menu 
@@ -29,8 +48,7 @@ $select_kat_menu = mysqli_query($conn, "SELECT id,kategori_menu FROM tb_kategori
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col d-flex justify-content-end">
-
+                <div class="col">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
@@ -55,11 +73,10 @@ $select_kat_menu = mysqli_query($conn, "SELECT id,kategori_menu FROM tb_kategori
                                     <th scope="row">
                                         <?php echo $no++; ?></th>
                                     <td>
-                                        <div style="width: 90px;">
-
+                                        <div class="menu-image-container">
+                                            <img src="assets/img/<?php echo $row['foto']; ?>" class="menu-image"
+                                                alt="...">
                                         </div>
-                                        <img src="assets/img/<?php echo $row['foto']; ?>" class="img-thumbnail"
-                                            alt="...">
                                     </td>
                                     <td><?php echo $row['nama_menu']; ?></td>
                                     <td><?php echo $row['keterangan']; ?></td>
@@ -203,8 +220,10 @@ $select_kat_menu = mysqli_query($conn, "SELECT id,kategori_menu FROM tb_kategori
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="input-group mb-3">
-                                        <img src="assets/img/<?php echo $row['foto']; ?>" class="img-thumbnail"
-                                            alt="...">
+                                        <div class="menu-image-container" style="width: 200px; height: 200px;">
+                                            <img src="assets/img/<?php echo $row['foto']; ?>" class="menu-image"
+                                                alt="...">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
