@@ -4,21 +4,19 @@ $jenismenu = isset($_POST['jenismenu']) ? htmlentities($_POST['jenismenu']) : ""
 $katmenu = isset($_POST['katmenu']) ? htmlentities($_POST['katmenu']) : "";
 
 if (!empty($_POST['input_katmenu_validate'])) {
-    $select = mysqli_query($conn, "SELECT * FROM tb_user WHERE username = '$username'");
+    $select = mysqli_query($conn, "SELECT kategori_menu FROM tb_kategori_menu WHERE kategori_menu = '$katmenu'");
 
     if(mysqli_num_rows($select) > 0){
         $message = '<script>alert("USERNAME yang dimasukkan telah ada");
-        window.location="../user"
-        </script>';
+        window.location="../katmenu"</script>';
     }else{
-        $query = mysqli_query($conn, "INSERT INTO tb_user (nama, username, level, nohp, alamat, password) 
-    VALUES ('$nama', '$username', '$level', '$nohp', '$alamat', '$password')");
+        $query = mysqli_query($conn, "INSERT INTO tb_kategori_menu (jenis_menu,kategori_menu) VALUES ('$jenismenu', '$katmenu')");
     if($query){
         $message = '<script>alert("data berhasil masuk");
-        window.location="../user"
-        </script>';
+        window.location="../katmenu"</script>';
     }else{
-        $message = '<script>alert("data gagal masuk");</script>';
+        $message = '<script>alert("data gagal masuk");
+        window.location="../katmenu"</script>';
     }}
     echo $message;
 }
