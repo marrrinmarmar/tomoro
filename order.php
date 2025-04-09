@@ -28,8 +28,9 @@
 
 <?php
 include "proses/connect.php";
-$query = mysqli_query($conn, "SELECT *, SUM(harga*jumlah) AS harganya FROM tb_order 
-LEFT JOIN tb_user ON tb_user.id = tb_order.pelayan LEFT JOIN tb_list_order ON tb_list_order.id = tb_order.id_order LEFT JOIN tb_daftar_menu ON tb_daftar_menu.id = tb_list_order.menu");
+$query = mysqli_query($conn, "SELECT tb_order.*, nama, SUM(harga*jumlah) AS harganya FROM tb_order 
+LEFT JOIN tb_user ON tb_user.id = tb_order.pelayan LEFT JOIN tb_list_order ON tb_list_order.order = tb_order.id_order LEFT JOIN tb_daftar_menu ON tb_daftar_menu.id = tb_list_order.menu
+GROUP BY id_order");
 $result = [];
 while ($record = mysqli_fetch_array($query)) {
   $result[] = $record; //menampung data 
@@ -84,19 +85,19 @@ while ($record = mysqli_fetch_array($query)) {
 
                         <!-- Tombol View -->
                         <button class="btn btn-info btn-sm me-1" data-bs-toggle="modal"
-                          data-bs-target="#ModalView<?php echo $row['id']; ?>">
+                          data-bs-target="#ModalView<?php echo $row['id_order']; ?>">
                           <i class="bi bi-eye"></i>
                         </button>
 
                         <!-- Tombol Edit -->
                         <button class="btn btn-warning btn-sm me-1" data-bs-toggle="modal"
-                          data-bs-target="#ModalEdit<?php echo $row['id']; ?>">
+                          data-bs-target="#ModalEdit<?php echo $row['id_order']; ?>">
                           <i class="bi bi-pencil"></i>
                         </button>
 
                         <!-- Tombol Hapus -->
                         <button class="btn btn-danger btn-sm me-1" data-bs-toggle="modal"
-                          data-bs-target="#ModalDelete<?php echo $row['id']; ?>">
+                          data-bs-target="#ModalDelete<?php echo $row['id_order']; ?>">
                           <i class="bi bi-trash"></i>
                         </button>
 
