@@ -136,8 +136,8 @@ while ($record = mysqli_fetch_array($query)) {
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="form-floating mb-3">
-                                            <input  type="text" class="form-control" id="floatingInput" placeholder="Kategori Menu" name="katmenu"  method="POST">
+                                        <div class="form-floating mb-3">/
+                                            <input  type="text" class="form-control" id="floatingInput" placeholder="Kategori Menu" name="katmenu"  method="POST" required value="<?php echo $row['kategori_menu'] ?>">
                                             <label for="floatingInput">Kategori Menu</label>
                                         </div>
                                     </div>
