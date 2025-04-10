@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 07, 2025 at 05:50 PM
+-- Generation Time: Apr 09, 2025 at 01:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,7 +47,6 @@ INSERT INTO `tb_daftar_menu` (`id`, `foto`, `nama_menu`, `keterangan`, `kategori
 (4, 'nasi_goreng.jpeg', 'Nasi Goreng', 'Nasi goreng spesial dengan telur dan ayam', 4, '30000', '8'),
 (5, 'matcha.jpeg', 'Matcha Latte', 'Teh hijau dengan susu steamed', 5, '28000', '12'),
 (7, '972847-cncicecream.jpeg', 'Es Krim Cookies n Cream', '', 3, '16000', '55'),
-(13, '96117-procedure text RAM.png', 'ssdasd', 'FFGFGF', 1, '3434243433', '33'),
 (14, '479264-es kopi susu.jpeg', 'Es Cokelat Kopi Susu Creamy', 'Campuran antara Cokelat Dan kopi ditambahkan Susu Fresh Creamy', 3, '8000', '104');
 
 -- --------------------------------------------------------
@@ -71,7 +70,54 @@ INSERT INTO `tb_kategori_menu` (`id`, `jenis_menu`, `kategori_menu`) VALUES
 (2, 2, 'Kopi'),
 (3, 3, 'Es Krim'),
 (4, 4, 'Nasi'),
-(5, 5, 'Matcha');
+(5, 5, 'Matcha'),
+(6, 1, 'Kentang');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_list_order`
+--
+
+CREATE TABLE `tb_list_order` (
+  `id_list_order` int(10) NOT NULL,
+  `menu` int(10) DEFAULT NULL,
+  `order` int(10) DEFAULT NULL,
+  `jumlah` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_list_order`
+--
+
+INSERT INTO `tb_list_order` (`id_list_order`, `menu`, `order`, `jumlah`) VALUES
+(6, 5, 18, 1),
+(7, 2, 20, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_order`
+--
+
+CREATE TABLE `tb_order` (
+  `id_order` int(10) NOT NULL,
+  `kode_order` varchar(200) DEFAULT NULL,
+  `pelanggan` varchar(200) DEFAULT NULL,
+  `meja` int(10) DEFAULT NULL,
+  `pelayan` int(10) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `waktu_order` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_order`
+--
+
+INSERT INTO `tb_order` (`id_order`, `kode_order`, `pelanggan`, `meja`, `pelayan`, `status`, `waktu_order`) VALUES
+(16, 'ORD001', 'Marin', 1, 1, 'selesai', '2025-04-08 03:00:00'),
+(18, 'ORD003', 'Sakura', 3, 3, 'menunggu', '2025-04-08 03:30:00'),
+(20, 'ORD005', 'Aoi', 4, 2, 'proses', '2025-04-08 04:00:00');
 
 -- --------------------------------------------------------
 
@@ -117,6 +163,21 @@ ALTER TABLE `tb_kategori_menu`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tb_list_order`
+--
+ALTER TABLE `tb_list_order`
+  ADD PRIMARY KEY (`id_list_order`),
+  ADD KEY `FK_tb_list_order_tb_daftar_menu` (`menu`),
+  ADD KEY `FK_tb_list_order_tb_order` (`order`);
+
+--
+-- Indexes for table `tb_order`
+--
+ALTER TABLE `tb_order`
+  ADD PRIMARY KEY (`id_order`),
+  ADD KEY `pelayan` (`pelayan`);
+
+--
 -- Indexes for table `tb_user`
 --
 ALTER TABLE `tb_user`
@@ -136,7 +197,19 @@ ALTER TABLE `tb_daftar_menu`
 -- AUTO_INCREMENT for table `tb_kategori_menu`
 --
 ALTER TABLE `tb_kategori_menu`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tb_list_order`
+--
+ALTER TABLE `tb_list_order`
+  MODIFY `id_list_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `tb_order`
+--
+ALTER TABLE `tb_order`
+  MODIFY `id_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
@@ -153,6 +226,19 @@ ALTER TABLE `tb_user`
 --
 ALTER TABLE `tb_daftar_menu`
   ADD CONSTRAINT `tb_daftar_menu_ibfk_1` FOREIGN KEY (`kategori`) REFERENCES `tb_kategori_menu` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tb_list_order`
+--
+ALTER TABLE `tb_list_order`
+  ADD CONSTRAINT `FK_tb_list_order_tb_daftar_menu` FOREIGN KEY (`menu`) REFERENCES `tb_daftar_menu` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_tb_list_order_tb_order` FOREIGN KEY (`order`) REFERENCES `tb_order` (`id_order`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tb_order`
+--
+ALTER TABLE `tb_order`
+  ADD CONSTRAINT `tb_order_ibfk_1` FOREIGN KEY (`pelayan`) REFERENCES `tb_user` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

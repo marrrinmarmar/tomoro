@@ -28,57 +28,89 @@
 
 <?php
 include "proses/connect.php";
-$query = mysqli_query($conn, "SELECT tb_order.*, nama, SUM(harga*jumlah) AS harganya FROM tb_order 
-LEFT JOIN tb_user ON tb_user.id = tb_order.pelayan LEFT JOIN tb_list_order ON tb_list_order.order = tb_order.id_order LEFT JOIN tb_daftar_menu ON tb_daftar_menu.id = tb_list_order.menu
-GROUP BY id_order");
 $result = [];
-while ($record = mysqli_fetch_array($query)) {
-  $result[] = $record; //menampung data 
+
+if (isset($_GET['order'])) {
+    $order_id = $_GET['order'];
+
+    $query = mysqli_query($conn, "
+        SELECT *, SUM(harga * jumlah) AS harganya 
+        FROM tb_list_order 
+        LEFT JOIN tb_order ON tb_order.id_order = tb_list_order.order
+        LEFT JOIN tb_daftar_menu ON tb_daftar_menu.id = tb_list_order.menu
+        WHERE tb_list_order.order = '$order_id'
+        GROUP BY tb_list_order.id_list_order
+    ");
+
+    if ($query) {
+        while ($record = mysqli_fetch_array($query)) {
+            $result[] = $record;
+            $kode = $record['kode_order'];
+            $meja = $record['meja'];
+            $pelanggan = $record['pelanggan'];
+        }
+    } else {
+        echo "Query gagal: " . mysqli_error($conn);
+    }
+} else {
+    echo "Order ID tidak dikirim.";
 }
-
-// $select_kat_menu = mysqli_query($conn, "SELECT id,kategori_menu FROM tb_kategori_menu");
-
 ?>
+
 <div class="col-lg-9 mt-2">
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-      Halaman Order
-      <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalTambahUser">Tambah
-        Menu</button>
+      Halaman Order Item
     </div>
     <div class="card-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="kode" value="<?php echo $kode; ?>">
+            <label for="uploadFoto">Kode Order</label>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="meja" value="<?php echo $meja; ?>">
+            <label for="uploadFoto">Nomor Meja</label>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="pelanggan" value="<?php echo $pelanggan; ?>">
+            <label for="uploadFoto">Pelanggan</label>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalTambahUser">Tambah Menu</button>
+      </div>
+      </div>
       <div class="row">
         <div class="col">
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">Kode Order</th>
-                  <th scope="col">Pelanggan</th>
-                  <th scope="col">Meja</th>
-                  <th scope="col">Total Harga</th>
-                  <th scope="col">Pelayan</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Waktu Order</th>
+                  <th scope="col">Menu</th>
+                  <th scope="col">Harga</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Total</th>
                   <th scope="col">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                $no = 1;
+                $total = 0 ;
                 foreach ($result as $row) {
                 ?>
                   <tr>
-                    <th scope="row">
-                      <?php echo $no++; ?></th>
-                    <td><?php echo $row['kode_order']; ?></td>
-                    <td><?php echo $row['pelanggan']; ?></td>
-                    <td><?php echo $row['meja']; ?></td>
+
+                    <td><?php echo $row['nama_menu']; ?></td>
+                    <td><?php echo $row['harga']; ?></td>
+                    <td><?php echo $row['jumlah']; ?></td>
                     <td><?php echo $row['harganya']; ?></td>
-                    <td><?php echo $row['nama']; ?></td>
-                    <td><?php echo $row['status']; ?></td>
-                    <td><?php echo $row['waktu_order']; ?></td>
 
                     <td>
                       <div class="d-flex">
@@ -97,25 +129,46 @@ while ($record = mysqli_fetch_array($query)) {
 
                         <!-- Tombol Hapus -->
                         <button class="btn btn-danger btn-sm me-1" data-bs-toggle="modal"
-                          data-bs-target="#ModalDelete<?php echo $row['id_order']; ?>">
-                          <i class="bi bi-trash"></i>
+                        data-bs-target="#ModalDelete<?php echo $row['id_order']; ?>">
+                        <i class="bi bi-trash"></i>
                         </button>
-
+                        
+                        </div>
+                        </td>
+                        </tr>
+                        <?php
+                        $total += $row['harganya'];
+                      }
+                      ?>
+                      <tr>
+                        <td colspan="3" class="fw-bold">
+                          Total Harga
+                        </td>
+                        <td class="fw-bold">
+                          <?php 
+                          echo $total;
+                          ?>
+                        </td>
+                      </tr>
+                      </tbody>
+                      </table>
                       </div>
-                    </td>
-                  </tr>
-                <?php
-                }
-                ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal tambah menu baru -->
-      <div class="modal fade" id="ModalTambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+                      </div>
+                      </div>
+                      <?php
+                      // Bagian TAMPILAN
+                      if (!empty($result)) {
+                          foreach ($result as $item) {
+                              echo $item['nama_menu'] . " - " . $item['jumlah'] . "x<br>";
+                          }
+                      } else {
+                          echo "<p style='color: gray;'>Tidak ada data untuk pesanan ini.</p>";
+                      }
+                      ?>
+                      
+                      <!-- Modal tambah menu baru -->
+                      <div class="modal fade" id="ModalTambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                      aria-hidden="true">
         <div class="modal-dialog modal-xl modal-fullscreen-md-down">
           <div class="modal-content">
             <div class="modal-header">
