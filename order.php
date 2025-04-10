@@ -100,7 +100,6 @@ while ($record = mysqli_fetch_array($query)) {
                           data-bs-target="#ModalDelete<?php echo $row['id_order']; ?>">
                           <i class="bi bi-trash"></i>
                         </button>
-
                       </div>
                     </td>
                   </tr>
@@ -112,27 +111,30 @@ while ($record = mysqli_fetch_array($query)) {
           </div>
         </div>
       </div>
-
-      <!-- Modal tambah menu baru -->
+      <?php
+      if (empty($result)) {
+        echo  "Data Order tidak ada";
+      }
+      ?>
+      <!-- Modal tambah order baru -->
       <div class="modal fade" id="ModalTambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-fullscreen-md-down">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Tambah Menu</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Order</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form class="needs-validation" novalidate action="proses/proses_input_menu.php"
+              <form class="needs-validation" novalidate action="proses/proses_input_order.php"
                 method="POST" enctype="multipart/form-data">
                 <div class="row">
                   <div class="col-lg-6">
                     <div class="input-group mb-3">
-                      <input type="file" class="form-control" id="uploadFoto"
-                        placeholder="Your Name" name="foto" required>
-                      <label class="input-group-text" for="uploadFoto">Upload Foto Menu</label>
+                      <input type="file" class="form-control" id="" name="kode-order">
+                      <label for="uploadFoto">Kode Order</label>
                       <div class="invalid-feedback">
-                        Masukkan Foto Menu.
+                        Masukkan Kode Order!
                       </div>
                     </div>
                   </div>
@@ -394,14 +396,10 @@ while ($record = mysqli_fetch_array($query)) {
   </div>
 </div>
 <!-- end delete -->
-
 <?php
     }
-
-    if (empty($result)) {
-      echo  "Data user tidak ada";
-    }
 ?>
+
 
 </div>
 </div>
