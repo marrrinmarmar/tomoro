@@ -119,7 +119,7 @@ while ($record = mysqli_fetch_array($query)) {
       <!-- Modal tambah order baru -->
       <div class="modal fade" id="ModalTambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-fullscreen-md-down">
+        <div class="modal-dialog modal-lg modal-fullscreen-md-down">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Tambah Order</h5>
@@ -129,23 +129,33 @@ while ($record = mysqli_fetch_array($query)) {
               <form class="needs-validation" novalidate action="proses/proses_input_order.php"
                 method="POST" enctype="multipart/form-data">
                 <div class="row">
-                  <div class="col-lg-6">
+                  <div class="col-lg-3">
                     <div class="input-group mb-3">
-                      <input type="file" class="form-control" id="" name="kode-order">
+                      <input type="number" class="form-control" id="floatinginput" name="kode-order" value="12323">
                       <label for="uploadFoto">Kode Order</label>
                       <div class="invalid-feedback">
                         Masukkan Kode Order!
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-lg-2">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="floatingInput"
-                        placeholder="Nama Menu" name="nama_menu" required>
-                      <label for="floatingInput">Nama Menu</label>
+                      <input type="number" class="form-control" id="floatingInput"
+                        placeholder="Nomor" name="meja" required>
+                      <label for="floatingInput">Nomor meja</label>
                     </div>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-lg-7">
+                    <div class="input-group mb-3">
+                      <input type="text" class="form-control" id="floatinginput" name="pelanggan" value="12323">
+                      <label for="uploadFoto">Nama Pelanggan</label>
+                      <div class="invalid-feedback">
+                        Masukkan Nama Pelanggan!
+                      </div>
+                    </div>
+                  </div>
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-floating mb-3">
