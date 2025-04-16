@@ -6,7 +6,7 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- http://localhost/decafe/?x=orderitem&order=19 -->
 <!-- Custom CSS untuk gambar menu -->
 <style>
   .menu-image-container {
@@ -66,19 +66,19 @@ if (isset($_GET['order'])) {
       <div class="row">
         <div class="col-lg-6">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="kode" value="<?php echo $kode; ?>">
+            <input type="text" class="form-control" id="kode" value="<?php echo isset($kode) && $kode !== ' ' ? $kode : '-'; ?>">
             <label for="uploadFoto">Kode Order</label>
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="meja" value="<?php echo $meja; ?>">
+            <input type="text" class="form-control" id="meja" value="<?php echo isset($meja) && $meja !== ' ' ? $meja : '-'; ?>">
             <label for="uploadFoto">Nomor Meja</label>
           </div>
         </div>
         <div class="col-lg-6">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="pelanggan" value="<?php echo $pelanggan; ?>">
+            <input type="text" class="form-control" id="pelanggan" value="<?php echo isset($pelanggan) && $pelanggan !== ' ' ? $pelanggan : '-'; ?>">
             <label for="uploadFoto">Pelanggan</label>
           </div>
         </div>

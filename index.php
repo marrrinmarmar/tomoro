@@ -11,7 +11,7 @@ if (isset($_SESSION['level_decafe'])) {
 } else {
     echo "<script>alert('Session level_decafe tidak ada!');</script>";
 }
-?> -->
+?>  -->
 
 <!-- ini content -->
 <?php

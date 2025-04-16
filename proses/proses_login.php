@@ -1,3 +1,4 @@
+
 <?php
 session_start(); // ✅ START SESSION HERE
 
@@ -13,7 +14,9 @@ if (!empty($_POST['submit_validate'])) {
     if ($hasil) {
         // ✅ SET SESSION
         $_SESSION['username_decafe'] = $username;
-        $_SESSION['level_decafe'] = $hasil['level'];
+            
+        $_SESSION['id_decafe'] = $hasil['id'];
+
         
         // ✅ DEBUG: Cek apakah session berhasil diset
         if (isset($_SESSION['level_decafe'])) {
@@ -34,4 +37,5 @@ if (!empty($_POST['submit_validate'])) {
         <?php
     }
 }
+
 ?>

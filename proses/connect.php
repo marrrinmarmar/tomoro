@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost","root","","db_decafe");
+$conn = mysqli_connect("localhost","root","","db");
 if(!$conn){
     echo "gagal konek";
 }

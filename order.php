@@ -28,6 +28,7 @@
 
 <?php
 include "proses/connect.php";
+date_default_timezone_set('Asia/Jakarta');
 $query = mysqli_query($conn, "SELECT tb_order.*, nama, SUM(harga*jumlah) AS harganya FROM tb_order 
 LEFT JOIN tb_user ON tb_user.id = tb_order.pelayan LEFT JOIN tb_list_order ON tb_list_order.order = tb_order.id_order LEFT JOIN tb_daftar_menu ON tb_daftar_menu.id = tb_list_order.menu
 GROUP BY id_order");
@@ -127,12 +128,12 @@ while ($record = mysqli_fetch_array($query)) {
             </div>
             <div class="modal-body">
               <form class="needs-validation" novalidate action="proses/proses_input_order.php"
-                method="POST" enctype="multipart/form-data">
+                method="POST">
                 <div class="row">
                   <div class="col-lg-3">
-                    <div class="input-group mb-3">
-                      <input type="number" class="form-control" id="floatinginput" name="kode-order" value="12323">
-                      <label for="uploadFoto">Kode Order</label>
+                    <div class="form-floating mb-3">
+                      <input type="number" class="form-control" id="floatinginput" name="kode-order" value="<?php echo date('ymdHi').rand(100,999) ?>" readonly>
+                      <label for="floatinginput">Kode Order</label>
                       <div class="invalid-feedback">
                         Masukkan Kode Order!
                       </div>
@@ -140,68 +141,37 @@ while ($record = mysqli_fetch_array($query)) {
                   </div>
                   <div class="col-lg-2">
                     <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="floatingInput"
+                      <input type="number" class="form-control" id="meja"
                         placeholder="Nomor" name="meja" required>
-                      <label for="floatingInput">Nomor meja</label>
+                      <label for="meja">Meja</label>
+                      <div class="invalid-feedback">
+                        Masukkan Nomor Meja!
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="row">
                   <div class="col-lg-7">
-                    <div class="input-group mb-3">
-                      <input type="text" class="form-control" id="floatinginput" name="pelanggan" value="12323">
-                      <label for="uploadFoto">Nama Pelanggan</label>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="pelanggan" name="pelanggan" placeholder="nama" required>
+                      <label for="pelanggan">Nama Pelanggan</label>
                       <div class="invalid-feedback">
                         Masukkan Nama Pelanggan!
                       </div>
                     </div>
                   </div>
+                </div>
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="floatingInput"
-                        placeholder="Keterangan" name="keterangan" required>
-                      <label for="floatingInput">Keterangan</label>
+                      <input type="text" class="form-control" id="catatan"
+                        placeholder="catatan" name="catatan">
+                      <label for="catatan">Catatan</label>
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-4">
-                    <div class="form-floating">
-                      <select class="form-select" name="kat_menu"
-                        aria-label="Default select example" required>
-                        <?php
-                        foreach ($select_kat_menu as $value) {
-                          echo "<option value=" . $value['id'] . ">$value[kategori_menu]</option>";
-                        }
-                        ?>
-                      </select>
-                      <label for="floatingInput">Pilih Menu</label>
-                      <div class="invalid-feedback">
-                        Pilih Menu
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="floatingInput"
-                        placeholder="Harga" name="harga" required>
-                      <label for="floatingInput">Harga</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="floatingInput" placeholder="Stok"
-                      name="stok" required>
-                    <label for="floatingInput">Stok</label>
-                  </div>
-                </div>
-            </div>
+                
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary" name="input_menu_validate" value="1234">Save
-                changes</button>
+              <button type="submit" class="btn btn-primary" name="input_order_validate" value="1234">Buat Order</button>
             </div>
             </form>
           </div>
