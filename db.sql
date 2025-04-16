@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2025 at 01:17 PM
+-- Generation Time: Apr 16, 2025 at 03:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_decafe`
+-- Database: `db`
 --
 
 -- --------------------------------------------------------
@@ -92,7 +92,10 @@ CREATE TABLE `tb_list_order` (
 
 INSERT INTO `tb_list_order` (`id_list_order`, `menu`, `order`, `jumlah`) VALUES
 (6, 5, 18, 1),
-(7, 2, 20, 4);
+(7, 2, 20, 4),
+(8, 3, 16, 5),
+(9, 3, 25, 8),
+(10, 2, 25, 4);
 
 -- --------------------------------------------------------
 
@@ -107,17 +110,19 @@ CREATE TABLE `tb_order` (
   `meja` int(10) DEFAULT NULL,
   `pelayan` int(10) DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
-  `waktu_order` timestamp NULL DEFAULT NULL
+  `waktu_order` timestamp NULL DEFAULT NULL,
+  `catatan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tb_order`
 --
 
-INSERT INTO `tb_order` (`id_order`, `kode_order`, `pelanggan`, `meja`, `pelayan`, `status`, `waktu_order`) VALUES
-(16, 'ORD001', 'Marin', 1, 1, 'selesai', '2025-04-08 03:00:00'),
-(18, 'ORD003', 'Sakura', 3, 3, 'menunggu', '2025-04-08 03:30:00'),
-(20, 'ORD005', 'Aoi', 4, 2, 'proses', '2025-04-08 04:00:00');
+INSERT INTO `tb_order` (`id_order`, `kode_order`, `pelanggan`, `meja`, `pelayan`, `status`, `waktu_order`, `catatan`) VALUES
+(16, 'ORD001', 'Marin', 1, 1, 'dibayar', '2025-04-08 03:00:00', NULL),
+(18, 'ORD003', 'Sakura', 3, 3, 'menunggu', '2025-04-08 03:30:00', NULL),
+(20, 'ORD005', 'Aoi', 4, 2, 'proses', '2025-04-08 04:00:00', NULL),
+(25, '2504160845277', 'pelanggan merin', 4, 2, 'dibayar', '2025-04-15 20:46:20', NULL);
 
 -- --------------------------------------------------------
 
@@ -203,13 +208,13 @@ ALTER TABLE `tb_kategori_menu`
 -- AUTO_INCREMENT for table `tb_list_order`
 --
 ALTER TABLE `tb_list_order`
-  MODIFY `id_list_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_list_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tb_order`
 --
 ALTER TABLE `tb_order`
-  MODIFY `id_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
