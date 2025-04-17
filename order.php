@@ -333,7 +333,7 @@ while ($record = mysqli_fetch_array($query)) {
               <div class="modal-body">
                 <form class="needs-validation" novalidate action="proses/proses_delete_menu.php" method="POST">
                   <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                  <input type="hidden" name="foto" value="<?php echo $row['foto']; ?>">
+
                   <div class="col-lg-12 mb-3">
                     Apakah Anda ingin menghapus menu <b><?php echo htmlspecialchars($row['nama_menu']); ?></b>?
                   </div>

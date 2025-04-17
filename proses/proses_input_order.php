@@ -13,17 +13,18 @@ if (!empty($_POST['input_order_validate'])) {
 
     if (mysqli_num_rows($select) > 0) {
         $message = '<script>alert("Kode Order yang dimasukkan telah ada");
-        window.location="../order"</script>';
+        window.location="../order";
+        </script>';
     } else {
         $query = mysqli_query($conn, "INSERT INTO tb_order (kode_order, meja, pelanggan, pelayan, status, waktu_order) 
         VALUES ('$kode_order', '$meja', '$pelanggan', '$pelayan', '$status', '$waktu_order')");
         
         if ($query) {
             $message = '<script>alert("Data berhasil masuk");
-            window.location="../?x=orderitem&order='.$kode_order.'"</script>';
+            window.location="../?x=orderitem&order='.$order.'"</script>';
         } else {
             $message = '<script>alert("Data gagal masuk: '.mysqli_error($conn).'");
-            window.location="../order"
+            window.location="../order";
             </script>';
         }
     }

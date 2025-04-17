@@ -28,7 +28,7 @@
 
 <?php
 include "proses/connect.php";
-$id_order = $_GET['id'];
+$id_order = $_GET['id_order'];
 $order_query = mysqli_query($conn, "SELECT * FROM tb_order WHERE id_order = '$id_order'");
 $order = mysqli_fetch_assoc($order_query);
 
