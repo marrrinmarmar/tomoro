@@ -132,7 +132,7 @@ while ($record = mysqli_fetch_array($query)) {
                 <div class="row">
                   <div class="col-lg-3">
                     <div class="form-floating mb-3">
-                      <input type="number" class="form-control" id="floatinginput" name="kode-order" value="<?php echo date('ymdHi') . rand(100, 999) ?>" readonly>
+                      <input type="number" class="form-control" id="floatinginput" name="kode-order" value="<?php echo date('ymdHis') . rand(100, 999) ?>" readonly>
                       <label for="floatinginput">Kode Order</label>
                       <div class="invalid-feedback">
                         Masukkan Kode Order!
