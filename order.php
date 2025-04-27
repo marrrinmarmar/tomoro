@@ -335,7 +335,7 @@ while ($record = mysqli_fetch_array($query)) {
               <input type="hidden" name="id_order" value="<?php echo $row['id_order']; ?>">
 
               <div class="col-lg-12 mb-3">
-                Apakah Anda yakin ingin menghapus order <b>#<?php echo htmlspecialchars($row['kode_order']); ?></b>?
+                Apakah Anda yakin ingin menghapus order <b>#<?php echo htmlspecialchars($row['id_order']); ?></b>?
               </div>
 
               <div class="modal-footer">

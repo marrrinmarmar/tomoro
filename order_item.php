@@ -28,23 +28,38 @@
 
 <?php
 include "proses/connect.php";
-$id_order = $_GET['id_order'];
+
+// Pastikan ada order ID
+$id_order = isset($_GET['order']) ? $_GET['order'] : null;
+
+if (!$id_order) {
+    echo "<script>alert('Order tidak ditemukan.'); window.location='order';</script>";
+    exit;
+}
+
+// Cek data di database
 $order_query = mysqli_query($conn, "SELECT * FROM tb_order WHERE id_order = '$id_order'");
 $order = mysqli_fetch_assoc($order_query);
 
-// Ambil semua item yang sudah dimasukkan
+if (!$order) {
+    echo "<script>alert('Order tidak ditemukan di database.'); window.location='order';</script>";
+    exit;
+}
+
+// Ambil item-item pesanan
 $item_query = mysqli_query($conn, "
-  SELECT tb_list_order.*, tb_daftar_menu.nama_menu, tb_daftar_menu.harga 
-  FROM tb_list_order 
-  LEFT JOIN tb_daftar_menu ON tb_list_order.menu = tb_daftar_menu.id 
-  WHERE tb_list_order.order = '$id_order'
+    SELECT tb_list_order.*, tb_daftar_menu.nama_menu, tb_daftar_menu.harga 
+    FROM tb_list_order 
+    LEFT JOIN tb_daftar_menu ON tb_list_order.menu = tb_daftar_menu.id 
+    WHERE tb_list_order.order = '$id_order'
 ");
 
 $items = [];
 while ($item = mysqli_fetch_assoc($item_query)) {
-  $items[] = $item;
+    $items[] = $item;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
