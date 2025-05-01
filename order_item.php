@@ -29,22 +29,24 @@
 <?php
 include "proses/connect.php";
 
-// Pastikan ada order ID
+// Ambil ID order dari URL
 $id_order = isset($_GET['order']) ? $_GET['order'] : null;
 
+// Kalau kosong, hentikan dan redirect
 if (!$id_order) {
     echo "<script>alert('Order tidak ditemukan.'); window.location='order';</script>";
     exit;
 }
 
-// Cek data di database
-$order_query = mysqli_query($conn, "SELECT * FROM tb_order WHERE id_order = '$id_order'");
-$order = mysqli_fetch_assoc($order_query);
+// Query dengan KUTIP di nilai
+$order_query = mysqli_query($conn, "SELECT * FROM tb_list_order WHERE `order` = '$id_order'");
 
-if (!$order) {
-    echo "<script>alert('Order tidak ditemukan di database.'); window.location='order';</script>";
+if (!$order_query) {
+    echo "Query error: " . mysqli_error($conn);
     exit;
 }
+?>
+
 
 // Ambil item-item pesanan
 $item_query = mysqli_query($conn, "

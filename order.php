@@ -246,7 +246,7 @@ while ($record = mysqli_fetch_array($query)) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form class="needs-validation" novalidate action="proses/proses_edit_menu.php" method="POST"
+                <form class="needs-validation" novalidate action="proses/proses_edit_order.php" method="POST"
                   enctype="multipart/form-data">
                   <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                   <div class="row">
