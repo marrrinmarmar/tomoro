@@ -80,7 +80,7 @@ while ($item = mysqli_fetch_assoc($item_query)) {
     <!-- Form Tambah Item -->
     <div class="card mb-4 shadow-sm">
       <div class="card-header bg-success text-white">
-        <strong><i class="bi bi-plus-circle me-1"></i> Tambah Item Pesanan</strong>
+        <strong><i class="bi bi-plus-circle me-1"></i>Tambah Item Pesanan</strong>
       </div>
       <div class="card-body">
         <form action="proses/proses_tambah_item.php" method="POST" class="row g-3">
