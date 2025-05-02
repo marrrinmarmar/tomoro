@@ -31,11 +31,11 @@ include "proses/connect.php";
 
 // Ambil ID order dari URL
 $id_order = isset($_GET['id_order']) ? $_GET['id_order'] : null;
-
+  
 
 // Kalau kosong, hentikan dan redirect
 if (!$id_order) {
-    echo "<script>alert('Order tidak ditemukan.'); window.location='order';</script>";
+    echo "<script>alert('Order berhasil ditambahkan.'); window.location='order';</script>";
     exit;
 }
 
