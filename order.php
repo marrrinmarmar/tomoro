@@ -28,6 +28,7 @@
 
 <?php
 include "proses/connect.php";
+
 date_default_timezone_set('Asia/Jakarta');
 $query = mysqli_query($conn, "SELECT tb_order.*, nama, SUM(harga*jumlah) AS harganya FROM tb_order 
 LEFT JOIN tb_user ON tb_user.id = tb_order.pelayan LEFT JOIN tb_list_order ON tb_list_order.order = tb_order.id_order LEFT JOIN tb_daftar_menu ON tb_daftar_menu.id = tb_list_order.menu
@@ -91,11 +92,10 @@ while ($record = mysqli_fetch_array($query)) {
                         </button>
 
                         <!-- Tombol Edit -->
-                        <a href="order_item.php?id=<?php echo $row['id_order']; ?>" class="btn btn-warning btn-sm me-1">
+                        <a href="./index.php?x=orderitem&id_order=<?php echo $row['id_order']; ?>" class="btn btn-warning btn-sm me-1">
                           <i class="bi bi-pencil"></i>
                         </a>
-
-
+                        
                         <!-- Tombol Hapus -->
                         <button class="btn btn-danger btn-sm me-1" data-bs-toggle="modal"
                           data-bs-target="#ModalDelete<?php echo $row['id_order']; ?>">
