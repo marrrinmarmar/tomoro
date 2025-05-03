@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2025 at 03:27 PM
+-- Generation Time: May 03, 2025 at 04:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_customer`
+--
+
+CREATE TABLE `tb_customer` (
+  `id_customer` int(11) NOT NULL,
+  `nama` varchar(100) DEFAULT NULL,
+  `no_hp` varchar(20) DEFAULT NULL,
+  `total_transaksi` int(11) DEFAULT 0,
+  `jumlah_kunjungan` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_customer`
+--
+
+INSERT INTO `tb_customer` (`id_customer`, `nama`, `no_hp`, `total_transaksi`, `jumlah_kunjungan`) VALUES
+(6, 'ahmad', NULL, 28000, 3),
+(7, 'idcust didefinisikan', NULL, 375000, 2);
 
 -- --------------------------------------------------------
 
@@ -71,7 +93,8 @@ INSERT INTO `tb_kategori_menu` (`id`, `jenis_menu`, `kategori_menu`) VALUES
 (3, 3, 'Es Krim'),
 (4, 4, 'Nasi'),
 (5, 5, 'Matcha'),
-(6, 1, 'Kentang');
+(6, 1, 'Kentang'),
+(7, 1, 'Salad');
 
 -- --------------------------------------------------------
 
@@ -91,11 +114,16 @@ CREATE TABLE `tb_list_order` (
 --
 
 INSERT INTO `tb_list_order` (`id_list_order`, `menu`, `order`, `jumlah`) VALUES
-(6, 5, 18, 1),
-(7, 2, 20, 4),
-(8, 3, 16, 5),
-(9, 3, 25, 8),
-(10, 2, 25, 4);
+(38, NULL, 56, 4),
+(39, 4, 56, 4),
+(40, 4, 56, 3),
+(41, NULL, 62, 5),
+(42, 3, 62, 5),
+(43, 3, 62, 2),
+(44, NULL, 63, 3),
+(45, 2, 63, 8),
+(46, 2, 63, 7),
+(47, 5, 64, 1);
 
 -- --------------------------------------------------------
 
@@ -105,24 +133,29 @@ INSERT INTO `tb_list_order` (`id_list_order`, `menu`, `order`, `jumlah`) VALUES
 
 CREATE TABLE `tb_order` (
   `id_order` int(10) NOT NULL,
+  `id_customer` int(11) DEFAULT NULL,
   `kode_order` varchar(200) DEFAULT NULL,
   `pelanggan` varchar(200) DEFAULT NULL,
   `meja` int(10) DEFAULT NULL,
   `pelayan` int(10) DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
   `waktu_order` timestamp NULL DEFAULT NULL,
-  `catatan` text DEFAULT NULL
+  `catatan` text DEFAULT NULL,
+  `tanggal` date DEFAULT curdate(),
+  `total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tb_order`
 --
 
-INSERT INTO `tb_order` (`id_order`, `kode_order`, `pelanggan`, `meja`, `pelayan`, `status`, `waktu_order`, `catatan`) VALUES
-(16, 'ORD001', 'Marin', 1, 1, 'dibayar', '2025-04-08 03:00:00', NULL),
-(18, 'ORD003', 'Sakura', 3, 3, 'menunggu', '2025-04-08 03:30:00', NULL),
-(20, 'ORD005', 'Aoi', 4, 2, 'proses', '2025-04-08 04:00:00', NULL),
-(25, '2504160845277', 'pelanggan merin', 4, 2, 'dibayar', '2025-04-15 20:46:20', NULL);
+INSERT INTO `tb_order` (`id_order`, `id_customer`, `kode_order`, `pelanggan`, `meja`, `pelayan`, `status`, `waktu_order`, `catatan`, `tanggal`, `total`) VALUES
+(56, NULL, '250503100518928', 'amparampar', 3, 2, 'pending', '2025-05-02 22:57:49', NULL, '2025-05-03', NULL),
+(58, NULL, '250503111309707', 'aku', 1, 2, 'pending', '2025-05-02 23:13:29', NULL, '2025-05-03', NULL),
+(60, NULL, '250503111459265', 'ngulang ga', 5, 2, 'pending', '2025-05-02 23:15:08', NULL, '2025-05-03', NULL),
+(62, 6, '250503160326874', 'ahmad', 55, 2, 'dibayar', '2025-05-03 04:06:34', NULL, '2025-05-03', 126000),
+(63, 7, '250503195555108', 'idcust didefinisikan', 31, 2, 'dibayar', '2025-05-03 07:56:31', NULL, '2025-05-03', 375000),
+(64, 6, '250503201912267', 'ahmad', 12, 2, 'dibayar', '2025-05-03 08:19:27', NULL, '2025-05-03', 28000);
 
 -- --------------------------------------------------------
 
@@ -155,6 +188,12 @@ INSERT INTO `tb_user` (`id`, `nama`, `username`, `password`, `level`, `nohp`, `a
 --
 
 --
+-- Indexes for table `tb_customer`
+--
+ALTER TABLE `tb_customer`
+  ADD PRIMARY KEY (`id_customer`);
+
+--
 -- Indexes for table `tb_daftar_menu`
 --
 ALTER TABLE `tb_daftar_menu`
@@ -180,7 +219,8 @@ ALTER TABLE `tb_list_order`
 --
 ALTER TABLE `tb_order`
   ADD PRIMARY KEY (`id_order`),
-  ADD KEY `pelayan` (`pelayan`);
+  ADD KEY `pelayan` (`pelayan`),
+  ADD KEY `fk_order_customer` (`id_customer`);
 
 --
 -- Indexes for table `tb_user`
@@ -193,6 +233,12 @@ ALTER TABLE `tb_user`
 --
 
 --
+-- AUTO_INCREMENT for table `tb_customer`
+--
+ALTER TABLE `tb_customer`
+  MODIFY `id_customer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `tb_daftar_menu`
 --
 ALTER TABLE `tb_daftar_menu`
@@ -202,19 +248,19 @@ ALTER TABLE `tb_daftar_menu`
 -- AUTO_INCREMENT for table `tb_kategori_menu`
 --
 ALTER TABLE `tb_kategori_menu`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tb_list_order`
 --
 ALTER TABLE `tb_list_order`
-  MODIFY `id_list_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_list_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `tb_order`
 --
 ALTER TABLE `tb_order`
-  MODIFY `id_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_order` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `tb_user`
@@ -243,6 +289,7 @@ ALTER TABLE `tb_list_order`
 -- Constraints for table `tb_order`
 --
 ALTER TABLE `tb_order`
+  ADD CONSTRAINT `fk_order_customer` FOREIGN KEY (`id_customer`) REFERENCES `tb_customer` (`id_customer`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `tb_order_ibfk_1` FOREIGN KEY (`pelayan`) REFERENCES `tb_user` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
