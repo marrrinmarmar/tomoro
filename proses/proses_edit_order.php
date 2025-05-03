@@ -7,7 +7,7 @@ $pelanggan = isset($_POST['pelanggan']) ? htmlentities($_POST['pelanggan']) : ""
 $meja = isset($_POST['meja']) ? htmlentities($_POST['meja']) : "";
 $status = isset($_POST['status']) ? htmlentities($_POST['status']) : "";
 
-// Validasi form (semua field harus diisi)
+// Validasi form (field harus diisi)
 if (!empty($_POST['edit_order_validate'])) {
     if ($id_order == "" || $pelanggan == "" || $meja == "" || $status == "") {
         $message = '<script>alert("Semua data harus diisi!"); window.location="../order";</script>';

@@ -1,4 +1,5 @@
-
+<div class="col-lg-9 mt-2">
+  <div class="card">
 <div class="container py-4">
   <h3 class="mb-4">Data Pelanggan</h3>
 
@@ -22,7 +23,7 @@
                 <td>{$p['no_hp']}</td>
                 <td>Rp " . number_format($p['total_transaksi']) . "</td>
                 <td>{$p['jumlah_kunjungan']}</td>
-                <td><button class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#riwayat{$p['id']}'>Lihat Riwayat</button></td>
+                <td><button class='btn btn-info btn-sm' data-bs-toggle='modal' data-bs-target='#riwayat{$p['id_customer']}'>Lihat Riwayat</button></td>
               </tr>";
       }
       ?>
@@ -33,9 +34,10 @@
   <?php
   $pelanggan = mysqli_query($conn, "SELECT * FROM tb_customer");
   while ($p = mysqli_fetch_assoc($pelanggan)) {
-    $id_cust = $p['id'];
+    $id_cust = $p['id_customer'];
     $riwayat = mysqli_query($conn, "SELECT * FROM tb_order WHERE id_customer = '$id_cust' AND status = 'dibayar'");
   ?>
+  
     <div class="modal fade" id="riwayat<?= $id_cust ?>" tabindex="-1">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -55,7 +57,7 @@
               <tbody>
                 <?php while ($r = mysqli_fetch_assoc($riwayat)) { ?>
                   <tr>
-                    <td><?= date('d/m/Y', strtotime($r['tanggal_order'])) ?></td>
+                    <td><?= date('d/m/Y', strtotime($r['waktu_order'])) ?></td>
                     <td>#<?= $r['id_order'] ?></td>
                     <td>Rp <?= number_format($r['total']) ?></td>
                   </tr>

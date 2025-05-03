@@ -26,13 +26,15 @@ $hasil = mysqli_fetch_array($query);
   <!-- ini HEADER -->
   <?php include "header.php"; ?>
   <!-- end Header -->
-<div class="containel-lg">
-  <div class="row mb-5">
+
+  <div class="container-fluid">
+  <div class="row">
   <!-- ini sidebar -->
   <?php include "sidebar.php"; ?>
   <!-- end sidebar -->
 
   <!-- ini content -->
+
   <?php
   include $page;
   ?>

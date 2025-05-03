@@ -50,6 +50,8 @@ while ($c = mysqli_fetch_assoc($chart_query)) {
 ?>
 
 <!-- Filter Tanggal -->
+<div class="col-lg-9 mt-2">
+<div class="card">
 <div class="container py-4">
   <h3 class="mb-4">Laporan Penjualan</h3>
   <form class="row g-3 mb-4" method="GET">

@@ -31,7 +31,8 @@ include "proses/connect.php";
 
 // Ambil ID order dari URL
 $id_order = isset($_GET['id_order']) ? $_GET['id_order'] : null;
-  
+
+
 
 // Kalau kosong, hentikan dan redirect
 if (!$id_order) {
@@ -39,13 +40,14 @@ if (!$id_order) {
     exit;
 }
 
-// Query dengan KUTIP di nilai
 $order_query = mysqli_query($conn, "SELECT * FROM tb_order WHERE id_order = '$id_order'");
 $order = mysqli_fetch_assoc($order_query);
 if (!$order_query) {
     echo "Query error: " . mysqli_error($conn);
     exit;
 }
+$id_customer = $order['id_customer'];
+
 
 
 // Ambil item-item pesanan
@@ -60,6 +62,7 @@ $items = [];
 while ($item = mysqli_fetch_assoc($item_query)) {
     $items[] = $item;
 }
+
 ?>
 
 
@@ -137,9 +140,9 @@ while ($item = mysqli_fetch_assoc($item_query)) {
               $total += $sub_total;
               echo "<tr>
         <td>{$item['nama_menu']}</td>
-        <td>Rp {$item['harga']}</td>
+        <td>Rp " . number_format($item['harga'], 0, ',', '.') . "</td>
         <td>{$item['jumlah']}</td>
-        <td>Rp $sub_total</td>
+        <td>Rp " . number_format($sub_total, 0, ',', '.') . "</td>
       </tr>";
             }
             ?>
@@ -159,6 +162,8 @@ while ($item = mysqli_fetch_assoc($item_query)) {
         <form action="proses/proses_status_bayar.php" method="POST" class="row g-2">
           <input type="hidden" name="id_order" value="<?= $id_order; ?>">
           <input type="hidden" name="total" value="<?= $total; ?>">
+          <input type="hidden" name="id_customer" value="<?= $id_customer; ?>">
+
 
           <div class="col-md-4">
             <label class="form-label">Status Order</label>
