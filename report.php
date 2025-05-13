@@ -1,37 +1,59 @@
 <?php
 include "proses/connect.php";
-$tanggal_awal = $_GET['dari'] ?? date('Y-m-01');
-$tanggal_akhir = $_GET['sampai'] ?? date('Y-m-d');
+
+// Validasi dan sanitasi input tanggal
+$tanggal_awal = isset($_GET['dari']) ? date('Y-m-d', strtotime($_GET['dari'])) : date('Y-m-01');
+$tanggal_akhir = isset($_GET['sampai']) ? date('Y-m-d', strtotime($_GET['sampai'])) : date('Y-m-d');
+
+// Pastikan tanggal awal tidak lebih besar dari tanggal akhir
+if ($tanggal_awal > $tanggal_akhir) {
+    $temp = $tanggal_awal;
+    $tanggal_awal = $tanggal_akhir;
+    $tanggal_akhir = $temp;
+}
 
 // Total Pendapatan & Jumlah Transaksi
 $total_query = mysqli_query($conn, "
-  SELECT SUM(tb_list_order.jumlah * tb_daftar_menu.harga) AS total_pendapatan,
-         COUNT(DISTINCT tb_order.id_order) AS jumlah_transaksi
+  SELECT 
+    COALESCE(SUM(tb_list_order.jumlah * tb_daftar_menu.harga), 0) AS total_pendapatan,
+    COUNT(DISTINCT tb_order.id_order) AS jumlah_transaksi
   FROM tb_order
   JOIN tb_list_order ON tb_order.id_order = tb_list_order.order
   JOIN tb_daftar_menu ON tb_list_order.menu = tb_daftar_menu.id
   WHERE tb_order.status = 'dibayar'
     AND DATE(tb_order.tanggal) BETWEEN '$tanggal_awal' AND '$tanggal_akhir'
 ");
+
+if (!$total_query) {
+    die("Error: " . mysqli_error($conn));
+}
+
 $total_data = mysqli_fetch_assoc($total_query);
 
 // Menu Terlaris
 $menu_terlaris = mysqli_query($conn, "
-  SELECT tb_daftar_menu.nama_menu, SUM(tb_list_order.jumlah) AS total_terjual
+  SELECT 
+    tb_daftar_menu.nama_menu, 
+    COALESCE(SUM(tb_list_order.jumlah), 0) AS total_terjual
   FROM tb_list_order
   JOIN tb_order ON tb_list_order.order = tb_order.id_order
   JOIN tb_daftar_menu ON tb_list_order.menu = tb_daftar_menu.id
   WHERE tb_order.status = 'dibayar'
     AND DATE(tb_order.tanggal) BETWEEN '$tanggal_awal' AND '$tanggal_akhir'
-  GROUP BY tb_list_order.menu
+  GROUP BY tb_list_order.menu, tb_daftar_menu.nama_menu
   ORDER BY total_terjual DESC
   LIMIT 5
 ");
 
+if (!$menu_terlaris) {
+    die("Error: " . mysqli_error($conn));
+}
+
 // Data per hari untuk grafik
 $chart_query = mysqli_query($conn, "
-  SELECT DATE(tb_order.tanggal) AS tanggal, 
-         SUM(tb_list_order.jumlah * tb_daftar_menu.harga) AS total_harian
+  SELECT 
+    DATE(tb_order.tanggal) AS tanggal, 
+    COALESCE(SUM(tb_list_order.jumlah * tb_daftar_menu.harga), 0) AS total_harian
   FROM tb_order
   JOIN tb_list_order ON tb_order.id_order = tb_list_order.order
   JOIN tb_daftar_menu ON tb_list_order.menu = tb_daftar_menu.id
@@ -41,11 +63,15 @@ $chart_query = mysqli_query($conn, "
   ORDER BY tanggal
 ");
 
+if (!$chart_query) {
+    die("Error: " . mysqli_error($conn));
+}
+
 $tanggal_chart = [];
 $total_chart = [];
 while ($c = mysqli_fetch_assoc($chart_query)) {
-  $tanggal_chart[] = $c['tanggal'];
-  $total_chart[] = $c['total_harian'];
+  $tanggal_chart[] = date('d/m/Y', strtotime($c['tanggal']));
+  $total_chart[] = (int)$c['total_harian'];
 }
 ?>
 
@@ -75,7 +101,7 @@ while ($c = mysqli_fetch_assoc($chart_query)) {
       <div class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Total Pendapatan</h5>
-          <h3>Rp <?= number_format($total_data['total_pendapatan'] ?? 0) ?></h3>
+          <h3>Rp <?= number_format($total_data['total_pendapatan'], 0, ',', '.') ?></h3>
         </div>
       </div>
     </div>
@@ -83,7 +109,7 @@ while ($c = mysqli_fetch_assoc($chart_query)) {
       <div class="card shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Jumlah Transaksi</h5>
-          <h3><?= $total_data['jumlah_transaksi'] ?></h3>
+          <h3><?= number_format($total_data['jumlah_transaksi'], 0, ',', '.') ?></h3>
         </div>
       </div>
     </div>
@@ -103,10 +129,20 @@ while ($c = mysqli_fetch_assoc($chart_query)) {
           </tr>
         </thead>
         <tbody>
-          <?php while ($m = mysqli_fetch_assoc($menu_terlaris)) { ?>
+          <?php 
+          if (mysqli_num_rows($menu_terlaris) > 0) {
+            while ($m = mysqli_fetch_assoc($menu_terlaris)) { 
+          ?>
             <tr>
-              <td><?= $m['nama_menu'] ?></td>
-              <td><?= $m['total_terjual'] ?></td>
+              <td><?= htmlspecialchars($m['nama_menu']) ?></td>
+              <td><?= number_format($m['total_terjual'], 0, ',', '.') ?></td>
+            </tr>
+          <?php 
+            }
+          } else {
+          ?>
+            <tr>
+              <td colspan="2" class="text-center">Tidak ada data penjualan</td>
             </tr>
           <?php } ?>
         </tbody>
@@ -144,8 +180,25 @@ while ($c = mysqli_fetch_assoc($chart_query)) {
       }]
     },
     options: {
+      responsive: true,
       scales: {
-        y: { beginAtZero: true }
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return 'Rp ' + value.toLocaleString('id-ID');
+            }
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return 'Rp ' + context.raw.toLocaleString('id-ID');
+            }
+          }
+        }
       }
     }
   });

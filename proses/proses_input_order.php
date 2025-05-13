@@ -15,14 +15,24 @@ $customer_data = mysqli_fetch_assoc($cek_customer);
 
 if ($customer_data) {
     $id_customer = $customer_data['id_customer'];
-    mysqli_query($conn, "UPDATE tb_customer SET jumlah_kunjungan = jumlah_kunjungan + 1 WHERE id_customer = '$id_customer'");
-} else {
-    mysqli_query($conn, "INSERT INTO tb_customer (nama, jumlah_kunjungan, total_transaksi) VALUES ('$pelanggan', 1, 0)");
+    mysqli_query($conn, "
+        UPDATE tb_customer 
+        SET jumlah_kunjungan = jumlah_kunjungan + 1, 
+            tanggal_kunjungan_terakhir = CURDATE() 
+        WHERE id_customer = '$id_customer'
+    ");
+}
+ else {
+    mysqli_query($conn, "
+    INSERT INTO tb_customer (nama, jumlah_kunjungan, total_transaksi, tanggal_kunjungan_terakhir) 
+    VALUES ('$pelanggan', 1, 0, CURDATE())");
+
     $id_customer = mysqli_insert_id($conn);
 }
 
 // Pastikan form dikirim
 if (!empty($_POST['input_order_validate'])) {
+    
     $select = mysqli_query($conn, "SELECT * FROM tb_order WHERE kode_order = '$kode_order'");
     if (mysqli_num_rows($select) > 0) {
         echo '<script>alert("Kode Order yang dimasukkan telah ada"); window.location="../order";</script>';

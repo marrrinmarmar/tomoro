@@ -49,7 +49,6 @@ if (!$order_query) {
 $id_customer = $order['id_customer'];
 
 
-
 // Ambil item-item pesanan
 $item_query = mysqli_query($conn, "
     SELECT tb_list_order.*, tb_daftar_menu.nama_menu, tb_daftar_menu.harga 
@@ -95,9 +94,9 @@ while ($item = mysqli_fetch_assoc($item_query)) {
             <select name="id_menu" class="form-select" required>
               <option selected disabled>Pilih Menu</option>
               <?php
-              $menu = mysqli_query($conn, "SELECT * FROM tb_daftar_menu");
+              $menu = mysqli_query($conn, "SELECT * FROM tb_daftar_menu WHERE stok > 0");
               while ($m = mysqli_fetch_assoc($menu)) {
-                echo "<option value='{$m['id']}'>{$m['nama_menu']} - Rp {$m['harga']}</option>";
+                echo "<option value='{$m['id']}'>{$m['nama_menu']} - Rp " . number_format($m['harga'], 0, ',', '.') . " (Stok: {$m['stok']})</option>";
               }
               ?>
             </select>
