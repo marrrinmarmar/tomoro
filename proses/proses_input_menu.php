@@ -41,35 +41,21 @@ if (!empty($_POST['input_menu_validate'])) {
              window.location="../menu"</script>';
         }else{
             if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {  
-                $query = mysqli_query($conn, "INSERT INTO tb_daftar_menu(foto, nama_menu, keterangan, kategori, harga, stok) VALUES ('".$kode_rand. $_FILES['foto']['name']."', '$nama_menu','$keterangan', '$kat_menu', '$harga', '$stok')");
+                $query = mysqli_query($conn, "INSERT INTO tb_daftar_menu(nama_menu, keterangan, kategori, harga, stok, foto) VALUES ('$nama_menu', '$keterangan', '$kat_menu', '$harga', '$stok', '".$kode_rand. $_FILES['foto']['name']."')");
                 if($query){
-                    $message = '<script>alert("menu berhasil masuk");
+                    $message = '<script>alert("Data dan gambar berhasil diupload");
                     window.location="../menu"</script>';
+                    echo $message;
                 }else{
                     $message = '<script>alert("menu gagal masuk");
                     window.location="../menu"</script>';
-                    
+                    echo $message;
                 }
             }else{
                 $message = '<script>alert("terjadi kesalahan file tidak dapat diupload");
                     window.location="../menu"</script>';
+                echo $message;
             }
         }
     }
-
-    // Move uploaded file to target directory
-    // if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {  
-    //     $query = mysqli_query($conn, "INSERT INTO tb_daftar_menu(nama_menu, keterangan, kategori, harga, stok, foto) VALUES ('$nama_menu', '$keterangan', '$kat_menu', '$harga', '$stok', '$namaFile')");
-    //     if($query){
-    //     if ($query) {
-    //         $message = '<script>alert("Data dan gambar berhasil diupload");
-    //         window.location="../menu"</script>';
-    //     } else {
-    //         $message = '<script>alert("Gagal memasukkan data ke database: ' . mysqli_error($conn) . '");
-    //         window.location="../menu"</script>';
-    //     }
-    // } else {
-    //     $message = '<script>alert("Gagal mengupload gambar");
-    //     window.location="../menu"</script>';
-    // }
-}    
+}

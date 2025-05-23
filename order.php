@@ -96,6 +96,11 @@ while ($record = mysqli_fetch_array($query)) {
                           <i class="bi bi-pencil"></i>
                         </a>
                         
+                        <!-- Tombol Print -->
+                        <a href="print_struk.php?id=<?php echo $row['id_order']; ?>" class="btn btn-success btn-sm me-1" target="_blank">
+                          <i class="bi bi-printer"></i>
+                        </a>
+                        
                         <!-- Tombol Hapus -->
                         <button class="btn btn-danger btn-sm me-1" data-bs-toggle="modal"
                           data-bs-target="#ModalDelete<?php echo $row['id_order']; ?>">

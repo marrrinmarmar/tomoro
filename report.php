@@ -79,7 +79,12 @@ while ($c = mysqli_fetch_assoc($chart_query)) {
 <div class="col-lg-9 mt-2">
 <div class="card">
 <div class="container py-4">
-  <h3 class="mb-4">Laporan Penjualan</h3>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">Laporan Penjualan</h3>
+    <button onclick="printReport()" class="btn btn-primary">
+      <i class="bi bi-printer"></i> Print Laporan
+    </button>
+  </div>
   <form class="row g-3 mb-4" method="GET">
     <input type="hidden" name="x" value="report">
     <div class="col-md-3">
@@ -202,4 +207,10 @@ while ($c = mysqli_fetch_assoc($chart_query)) {
       }
     }
   });
+
+  function printReport() {
+    const startDate = document.querySelector('input[name="dari"]').value;
+    const endDate = document.querySelector('input[name="sampai"]').value;
+    window.open(`print_report.php?start_date=${startDate}&end_date=${endDate}`, '_blank');
+  }
 </script>
