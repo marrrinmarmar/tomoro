@@ -1,3 +1,6 @@
+<?php
+include "proses/connect.php";
+?>
 <div class="col-lg-9 mt-2">
   <div class="card">
 <div class="container py-4">
